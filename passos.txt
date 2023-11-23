@@ -1,0 +1,6 @@
+Criar package.json > npm init --y
+Instalar biblioteca express > npm install express
+ Criar script start no package.json > "start":"npx nodemon index.js"
+ Executar servidor > npm run start
+
+ Atualiza npm > npm -g install npm@latest
