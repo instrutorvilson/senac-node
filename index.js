@@ -1,5 +1,6 @@
 const express = require('express')
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 const app = express()
 const port = 3000
 
@@ -28,8 +29,28 @@ app.post('/usuarios', (req, res) => {
 })
 
 app.post('/usuarios/login', (req, res) => {
+    let achou = false
+    let token = ''
+    for(let i = 0; i < usuarios.length; i++){
+        if(usuarios[i].email == req.body.email){
+           achou = bcrypt.compareSync(req.body.senha,usuarios[i].senha)  
+           token = jwt.sign(
+            {
+                id:usuarios[i].id, 
+                nome:usuarios[i].nome,
+                email:usuarios[i].email,
+                perfil:usuarios[i].perfil
+            },'123')  
+           break    
+        }
+    }
+
+    if(!achou){
+        res.status(404).send("Usuário ou senha inválido")
+        return
+    }
     
-    res.send('login de usuarios')
+    res.status(200).send(token)
   })
 
 app.listen(port, () => {
